@@ -2,7 +2,7 @@ import HogsDetails from "./HogsDetails"
 import { useState } from "react"
 
 function HogList({ name, image, hogsSpec }) {
-    console.log(hogsSpec.greased)
+
     const [showDetails, setShowDetails] = useState(false)
 
     function handleTileClick() {
