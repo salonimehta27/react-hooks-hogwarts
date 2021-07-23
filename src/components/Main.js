@@ -1,12 +1,23 @@
 import FilterHogs from "./FilterHogs";
 import HogList from "./HogList";
 import { useState } from "react"
+import Form from "./Form";
 
 function Main({ hogsInfo }) {
 
-    const [greased, setGreased] = useState(false);
+    const [grease, setGreased] = useState(false);
     const [sortPigs, setSort] = useState("name");
-    const checkHogs = hogsInfo.filter(greaseCheck => greased ? greaseCheck.greased : true).sort((a, b) => {
+    const [showForm, setShowForm] = useState(false)
+    const [formData, setFormData] = useState({
+        name: "",
+        specialty: "",
+        greased: "",
+        weight: "",
+        "highest medal achieved": "",
+        image: ""
+    })
+
+    const checkHogs = hogsInfo.filter(greaseCheck => grease ? greaseCheck.greased : true).sort((a, b) => {
         if (sortPigs === "name") {
             let fa = a.name.toLowerCase()
             let fb = b.name.toLowerCase()
@@ -28,12 +39,24 @@ function Main({ hogsInfo }) {
     return (<>
         <div>
             <FilterHogs
-                value={greased}
+                value={grease}
                 setValue={setGreased}
                 sort={sortPigs}
                 onSetSort={setSort} />
         </div>
 
+        <div>
+            <button onClick={() => setShowForm(!showForm)}>{showForm ? "Hide Form" : "Add a Hog"}</button>
+        </div>
+        {showForm ? <Form
+            formData={formData}
+            name={formData.name}
+            specialty={formData.specialty}
+            greased={formData.greased}
+            weight={formData.weight}
+            image={formData.image}
+            highestMedal={formData["highest medal achieved"]}
+            onSetFormData={setFormData} /> : null}
         <div className="ui grid container">
             {checkHogs.map(hogs => <HogList key={hogs.name} name={hogs.name} image={hogs.image} hogsSpec={hogs} ></HogList>)}
         </div>
